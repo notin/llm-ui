@@ -1,8 +1,8 @@
 
 import io from "socket.io-client";
 import React, { useEffect, useState } from "react";
-//@ts-ignore
-const socket = io.connect("http://localhost:3001");
+//@ts-nocheck
+import { socket } from "../listeners/socket"
 
 function Page2() {
   //Room State
@@ -14,7 +14,7 @@ function Page2() {
 
   const joinRoom = () => {
     if (room !== "") {
-      socket.emit("join_room", room);
+      socket.emit("chat", room);
     }
   };
 

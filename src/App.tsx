@@ -5,11 +5,13 @@ import "./index.css";
 import Chat from "./chat/Chat";
 import Question from "./chat/Question";
 
-import io from "socket.io-client";
-import Pages2 from "./chat/Pages2";
-const socketConnect = io("http://localhost:3535");
 
-socketConnect.on("connect", () => {
+import Pages2 from "./chat/Pages2";
+import {socket} from "./listeners/socket";
+
+
+
+socket.on("connect", () => {
     console.log("Connected to server");
 });
 const App = () => (

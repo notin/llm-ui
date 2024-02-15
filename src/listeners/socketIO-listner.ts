@@ -1,2 +1,2 @@
 import io from "socket.io-client";
-const socketConnect = io.connect("http://localhost:3001");
+const socketConnect = io("http://localhost:3001");
