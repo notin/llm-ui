@@ -5,7 +5,6 @@ import "../index.css";
 import { useAtom } from "jotai";
 import { messagesAtom } from "../atoms/store";
 import "../index.css"
-
 const Chat = () => {
     const [chat, setChat] = useAtom(messagesAtom);
     const body = <div key={"chat-body"}>

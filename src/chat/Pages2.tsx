@@ -3,6 +3,7 @@ import io from "socket.io-client";
 import React, { useEffect, useState } from "react";
 //@ts-nocheck
 import { socket } from "../listeners/socket"
+import "../index.css";
 
 function Page2() {
   //Room State
@@ -21,12 +22,21 @@ function Page2() {
   const sendMessage = () => {
     socket.emit("send_message", { message, room });
   };
-
-  useEffect(() => {
     socket.on("receive_message", (data: any) => {
-      setMessageReceived(data.message);
+        console.log("Received Message: ", data);
+        const message = data.message ? data.message : data
+        setMessageReceived(message);
     });
+  useEffect(() => {
+
   }, [socket]);
+
+  if(socket.connected) {
+    console.log("Connected to server");
+  }
+  if(room !== "") {
+      joinRoom()
+  }
   return (
     <div className="App">
       <input
