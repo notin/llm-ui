@@ -7,7 +7,7 @@ import Question from "./chat/Question";
 
 import io from "socket.io-client";
 import Pages2 from "./chat/Pages2";
-const socketConnect = io("http://localhost:3535");
+const socketConnect = io("http://localhost:3001");
 
 socketConnect.on("connect", () => {
     console.log("Connected to server");
