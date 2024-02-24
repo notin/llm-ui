@@ -12,20 +12,24 @@ function Page2() {
   const [message, setMessage] = useState("");
   const [messageReceived, setMessageReceived] = useState("");
 
-  const joinRoom = () => {
-    if (room !== "") {
-      socket.emit("join_room", room);
-    }
-  };
+    const joinRoom = () => {
+        if (room !== "") {
+            socket.emit("join_room", room);
+            socket.on("room_joined", (data: any) => {
+                console.log(data);
+            });
+        }
+
+    };
 
   const sendMessage = () => {
     socket.emit("send_message", { message, room });
   };
-
-  useEffect(() => {
     socket.on("receive_message", (data: any) => {
-      setMessageReceived(data.message);
+        setMessageReceived(data.message);
     });
+  useEffect(() => {
+
   }, [socket]);
   return (
     <div className="App">
@@ -33,6 +37,7 @@ function Page2() {
         placeholder="Room Number..."
         onChange={(event) => {
           setRoom(event.target.value);
+          console.log(`my room is ${event.target.value}`);
         }}
       />
       <button onClick={joinRoom}> Join Room</button>
