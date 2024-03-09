@@ -2,7 +2,7 @@ import io from "socket.io-client";
 import React, { useEffect, useState } from "react";
 //@ts-nocheck
 import { socket } from "../listeners/socket"
-import "../index.css";
+import "./index.css";
 
 function Page2() {
     //Room State
@@ -19,13 +19,14 @@ function Page2() {
     };
 
     const sendMessage = () => {
+        // joinRoom();
         socket.emit("send_message", { message, room });
     };
 
     useEffect(() => {
         socket.on("receive_message", (data: any) => {
             console.log("Received Message: ", data);
-            const message = data.message ? data.message : data
+            const message = (data && data.message) ? data.message : data
             setMessageReceived(prevMessages => [...prevMessages, message]);
         });
     }, []);
@@ -39,29 +40,40 @@ function Page2() {
         }
     }, [socket, room]);
 
-    return (
-        <div className="App">
-            <h1> Message:</h1>
-            {messageReceived.map((message, index) => {
-                return <p key={index}>{message}</p>;
-            })}
-            <input
-                placeholder="Room Number..."
-                onChange={(event) => {
-                    setRoom(event.target.value);
-                }}
-            />
-            <button onClick={joinRoom}> Join Room</button>
-            <input
-                placeholder="Message..."
-                onChange={(event) => {
-                    setMessage(event.target.value);
-                }}
-            />
-            <button onClick={sendMessage}> Send Message</button>
+        return (
+            <div className="App">
+                <h1>Message:</h1>
+                <div>
+                    {messageReceived.map((message, index) => (
+                        <div key={index} className="message-container">
+                            <p>{message}</p>
+                        </div>
+                    ))}
+                </div>
+                <input
+                    type="text"
+                    placeholder="Room Number..."
+                    onChange={(event) => {
+                        setRoom(event.target.value);
+                    }}
+                />
+                <button onClick={joinRoom}>Join Room</button>
+                <input
+                    type="text"
+                    placeholder="Message..."
+                    onChange={(event) => {
+                        setMessage(event.target.value);
+                    }}
+                    onKeyPress={(event) => {
+                        if (event.key === 'Enter') {
+                            sendMessage();
+                        }
+                    }}
+                />
+                <button onClick={sendMessage}>Send Message</button>
+            </div>
+        );
 
-        </div>
-    );
 }
 
 export default Page2;
