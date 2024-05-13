@@ -2,17 +2,18 @@
 
 .App {
     font-family: 'Arial', sans-serif;
-    background-color: #f2f2f2;
-    color: #333;
+    color: #e5e5ea;
     max-width: 600px;
     margin: 20px auto;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #4a4a4a;
+    border-color: cadetblue;
 }
 
 h1 {
-    color: #4a4a4a;
+    color: #e5e5ea;
     text-align: center;
 }
 

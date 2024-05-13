@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 //@ts-nocheck
 import { socket } from "../listeners/socket"
 import "./index.css";
+import {PromptAndResponse} from "../types/PromptAndResponse";
 
 function Page2() {
     //Room State
@@ -10,13 +11,14 @@ function Page2() {
 
     // Messages States
     const [message, setMessage] = useState("");
-    const [messageReceived, setMessageReceived] = useState(new Array<string>());
+    const [messageReceived, setMessageReceived] = useState(new Array<PromptAndResponse>());
 
     const joinRoom = () => {
         if (room !== "") {
             socket.emit("chat", room);
         }
     };
+
 
     const sendMessage = () => {
         // joinRoom();
@@ -27,7 +29,9 @@ function Page2() {
         socket.on("receive_message", (data: any) => {
             console.log("Received Message: ", data);
             const message = (data && data.message) ? data.message : data
-            setMessageReceived(prevMessages => [...prevMessages, message]);
+            let newVar = [...messageReceived, message];
+            setMessageReceived( newVar);
+            messageReceived.map( x=>console.log("Message Received: ", x));
         });
     }, []);
 
@@ -35,18 +39,20 @@ function Page2() {
         if(socket.connected) {
             console.log("Connected to server");
         }
-        if(room !== "") {
-            joinRoom()
-        }
+        // if(room !== "") {
+        //     joinRoom()
+        // }
     }, [socket, room]);
 
         return (
             <div className="App">
                 <h1>Message:</h1>
                 <div>
-                    {messageReceived.map((message, index) => (
+                    {messageReceived.map((promptAndResponse, index) => (
                         <div key={index} className="message-container">
-                            <p>{message}</p>
+                            <p>{promptAndResponse.prompt}</p>
+                            <br/>
+                            <p>{promptAndResponse.response}</p>
                         </div>
                     ))}
                 </div>

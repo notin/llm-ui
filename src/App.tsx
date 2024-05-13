@@ -11,11 +11,12 @@ import {socket} from "./listeners/socket";
 
 
 
+
 socket.on("connect", () => {
     console.log("Connected to server");
 });
 const App = () => (
-    <div>
+    <div className={"App"}>
         <Pages2/>
     </div>
 
