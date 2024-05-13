@@ -18,6 +18,7 @@ function Page2() {
         }
     };
 
+
     const sendMessage = () => {
         // joinRoom();
         socket.emit("send_message", { message, room });
@@ -28,6 +29,7 @@ function Page2() {
             console.log("Received Message: ", data);
             const message = (data && data.message) ? data.message : data
             setMessageReceived(prevMessages => [...prevMessages, message]);
+            messageReceived.map( x=>console.log("Message Received: ", x));
         });
     }, []);
 
@@ -35,9 +37,9 @@ function Page2() {
         if(socket.connected) {
             console.log("Connected to server");
         }
-        if(room !== "") {
-            joinRoom()
-        }
+        // if(room !== "") {
+        //     joinRoom()
+        // }
     }, [socket, room]);
 
         return (
