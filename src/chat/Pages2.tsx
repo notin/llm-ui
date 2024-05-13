@@ -28,7 +28,8 @@ function Page2() {
         socket.on("receive_message", (data: any) => {
             console.log("Received Message: ", data);
             const message = (data && data.message) ? data.message : data
-            setMessageReceived(prevMessages => [...prevMessages, message]);
+            let newVar = [...messageReceived, message];
+            setMessageReceived( newVar);
             messageReceived.map( x=>console.log("Message Received: ", x));
         });
     }, []);
