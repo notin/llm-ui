@@ -6,7 +6,8 @@
     "build:dev": "webpack --mode development",
     "build:start": "cd dist && PORT=7070 npx serve",
     "start": "webpack serve --open --mode development",
-    "start:live": "webpack serve --open --mode development --live-reload --hot"
+    "start:live": "webpack serve --open --mode development --live-reload --hot",
+    "start:dev" : "nodemon --watch 'src/**/*.ts' --watch 'src/**/*.tsx' --exec 'webpack serve --mode development'"
   },
   "license": "MIT",
   "author": {
@@ -39,10 +40,11 @@
     "install": "^0.13.0",
     "jotai": "^2.2.1",
     "jotai-signal": "^0.8.1",
+    "nodemon": "^3.1.4",
     "npm": "^10.4.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "socket.io-client": "^4.4.1",
+    "socket.io-client": "4.4.1",
     "stomp": "^0.1.1",
     "ts-node": "^10.9.1",
     "ws": "^8.16.0",

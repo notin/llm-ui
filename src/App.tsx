@@ -6,7 +6,7 @@ import Chat from "./chat/Chat";
 import Question from "./chat/Question";
 
 
-import Pages2 from "./chat/Pages2";
+import LandingPage from "./chat/LandingPage";
 import {socket} from "./listeners/socket";
 
 
@@ -17,7 +17,7 @@ socket.on("connect", () => {
 });
 const App = () => (
     <div className={"App"}>
-        <Pages2/>
+        <LandingPage/>
     </div>
 
 );
