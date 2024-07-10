@@ -3,15 +3,18 @@ import React, { useEffect, useState } from "react";
 //@ts-nocheck
 import { socket } from "../listeners/socket"
 import "./index.css";
-import {PromptAndResponse} from "../types/PromptAndResponse";
+import { PromptAndResponse } from "../types/PromptAndResponse";
+import { useAtom } from "jotai";
+import { promptAndMessageHistoryAtom } from "../store/store";
 
-function Page2() {
-    //Room State
+function LandingPage() {
+    // Room State
     const [room, setRoom] = useState("");
 
-    // Messages States
+    // Message States
     const [message, setMessage] = useState("");
-    const [messageReceived, setMessageReceived] = useState(new Array<PromptAndResponse>());
+    const [messageReceived, setMessageReceived] = useAtom(promptAndMessageHistoryAtom);
+    console.log("On rerender Message Received: ", messageReceived)
 
     const joinRoom = () => {
         if (room !== "") {
@@ -19,67 +22,66 @@ function Page2() {
         }
     };
 
-
     const sendMessage = () => {
-        // joinRoom();
         socket.emit("send_message", { message, room });
     };
+    const handleMessageReceive = (data: any) => {
+        console.log("on message Message Received: ", messageReceived)
+        console.log("Received Message: ", data);
+        const message = (data && data.message) ? data.message : data;
+        setMessageReceived((prevMessages) => [...prevMessages, message]);
+    };
+    useEffect(() => {
+        socket.on("receive_message", handleMessageReceive);
+        return () => {
+            socket.off("receive_message", handleMessageReceive);
+        };
+    }, [room, setMessageReceived]);
 
     useEffect(() => {
-        socket.on("receive_message", (data: any) => {
-            console.log("Received Message: ", data);
-            const message = (data && data.message) ? data.message : data
-            let newVar = [...messageReceived, message];
-            setMessageReceived( newVar);
-            messageReceived.map( x=>console.log("Message Received: ", x));
-        });
-    }, []);
-
-    useEffect(() => {
-        if(socket.connected) {
+        if (socket.connected) {
             console.log("Connected to server");
         }
-        // if(room !== "") {
-        //     joinRoom()
-        // }
     }, [socket, room]);
 
-        return (
-            <div className="App">
-                <h1>Message:</h1>
-                <div>
-                    {messageReceived.map((promptAndResponse, index) => (
-                        <div key={index} className="message-container">
-                            <p>{promptAndResponse.prompt}</p>
-                            <br/>
-                            <p>{promptAndResponse.response}</p>
-                        </div>
-                    ))}
-                </div>
-                <input
-                    type="text"
-                    placeholder="Room Number..."
-                    onChange={(event) => {
-                        setRoom(event.target.value);
-                    }}
-                />
-                <button onClick={joinRoom}>Join Room</button>
-                <input
-                    type="text"
-                    placeholder="Message..."
-                    onChange={(event) => {
-                        setMessage(event.target.value);
-                    }}
-                    onKeyPress={(event) => {
-                        if (event.key === 'Enter') {
-                            sendMessage();
-                        }
-                    }}
-                />
-                <button onClick={sendMessage}>Send Message</button>
+    return (
+        <div className="App">
+            <h1>Message:</h1>
+            <div>
+                {messageReceived.map((promptAndResponse, index) => (
+                    <div key={index} className="message-container">
+                        <p>{promptAndResponse.prompt}</p>
+                        <br />
+                        <p>{promptAndResponse.response}</p>
+                    </div>
+                ))}
             </div>
-        );
-
+            <input className="input"
+                   type="text"
+                   placeholder="Room Number..."
+                   onChange={(event) => {
+                       setRoom(event.target.value);
+                   }}
+            />
+            <button className="buttons"
+                    onClick={joinRoom}>Join Room</button>
+            <div>
+                <input className="input"
+                       type="text"
+                       placeholder="Message..."
+                       onChange={(event) => {
+                           setMessage(event.target.value);
+                       }}
+                       onKeyPress={(event) => {
+                           if (event.key === 'Enter') {
+                               sendMessage();
+                           }
+                       }}
+                /></div>
+            <button className="buttons"
+                    onClick={sendMessage}>Send Message</button>
+        </div>
+    );
 }
 
-export default Page2;
+export default LandingPage;
