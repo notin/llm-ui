@@ -6,7 +6,7 @@ module.exports = (_, argv) => ({
   output: {
     publicPath: "http://localhost:7070/",
   },
-  
+
   devtool: 'source-map',
 
   resolve: {
@@ -60,8 +60,12 @@ module.exports = (_, argv) => ({
         "@stomp/stompjs": {
           singleton: true, // This ensures a single shared instance
           // You might also want to specify the version, like so:
-          // requiredVersion: "specific-version-number"
+          // requiredVersion: 'false'
         },
+        "socket.io-client": {
+            singleton: true,
+            requiredVersion: '4.7.4'
+        }
       },
     }),
     new HtmlWebPackPlugin({

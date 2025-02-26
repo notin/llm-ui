@@ -1,8 +1,6 @@
 import {atom} from "jotai/vanilla";
+import {PromptAndResponse} from "../types/PromptAndResponse";
 
-export const messagesAtom = atom([
-    {user: "ChatGpt", message: "Hello, I'm ChatGpt!", messageType: "RECEIVED"},
-    {user: "Me", message: "Hello, I'm Me!", messageType: "SENT"}
-]);
+export const messagesAtom = atom(new Array<PromptAndResponse>());
 
 export const stompAtom = atom({connected: false});

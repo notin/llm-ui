@@ -4,6 +4,8 @@ import React, { useEffect, useState } from "react";
 import { socket } from "../listeners/socket"
 import "./index.css";
 import {PromptAndResponse} from "../types/PromptAndResponse";
+import {useAtom} from "jotai";
+import {messagesAtom} from "../atoms/store";
 
 function Page2() {
     //Room State
@@ -11,7 +13,7 @@ function Page2() {
 
     // Messages States
     const [message, setMessage] = useState("");
-    const [messageReceived, setMessageReceived] = useState(new Array<PromptAndResponse>());
+    const [messageReceived, setMessageReceived] = useAtom(messagesAtom);
 
     const joinRoom = () => {
         if (room !== "") {
@@ -27,23 +29,10 @@ function Page2() {
 
     useEffect(() => {
         socket.on("receive_message", (data: any) => {
-            console.log("Received Message: ", data);
-            const message = (data && data.message) ? data.message : data
-            let newVar = [...messageReceived, message];
-            setMessageReceived( newVar);
-            messageReceived.map( x=>console.log("Message Received: ", x));
+            const message = data && data.message ? data.message : data;
+            setMessageReceived(prevMessages => [...prevMessages, message]);
         });
     }, []);
-
-    useEffect(() => {
-        if(socket.connected) {
-            console.log("Connected to server");
-        }
-        // if(room !== "") {
-        //     joinRoom()
-        // }
-    }, [socket, room]);
-
         return (
             <div className="App">
                 <h1>Message:</h1>

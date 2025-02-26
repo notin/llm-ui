@@ -42,7 +42,7 @@
     "npm": "^10.4.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "socket.io-client": "^4.4.1",
+    "socket.io-client": "^4.7.4",
     "stomp": "^0.1.1",
     "ts-node": "^10.9.1",
     "ws": "^8.16.0",
